@@ -31,9 +31,9 @@ public class MySqlBaseDbContext<TDbContext, TDatabaseConfiguration> : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder
-            .UseMySql(_databaseConfiguration.ConnectionString,
-                ServerVersion.AutoDetect(_databaseConfiguration.ConnectionString))
-            .UseSnakeCaseNamingConvention();
+        // optionsBuilder
+        //     .UseMySql(_databaseConfiguration.ConnectionString,
+        //         ServerVersion.AutoDetect(_databaseConfiguration.ConnectionString))
+        //     .UseSnakeCaseNamingConvention();
     }
 }

@@ -16,8 +16,8 @@ public abstract class BaseHttpClient : IDisposable, ITypeDirectedSingletonBinded
 {
     private static readonly Dictionary<Type, IQueryStringTypeConverter> s_typeConverters = new()
     {
-        {typeof(QueryStringBasicConverter), new QueryStringBasicConverter()},
-        {typeof(QueryStringListConverter), new QueryStringListConverter()}
+        { typeof(QueryStringBasicConverter), new QueryStringBasicConverter() },
+        { typeof(QueryStringListConverter), new QueryStringListConverter() }
     };
 
     public static T GetTypeConverter<T>() where T : IQueryStringTypeConverter => (T)s_typeConverters[typeof(T)];
@@ -29,8 +29,7 @@ public abstract class BaseHttpClient : IDisposable, ITypeDirectedSingletonBinded
     {
         Logger = Log.ForContext(GetType());
         var options = new RestClientOptions(baseUrl) { ThrowOnAnyError = true, MaxTimeout = timeoutInMilliseconds };
-        Client = new RestClient(options);
-        Client.UseNewtonsoftJson();
+        Client = new RestClient(options, configureSerialization: cfg => cfg.UseNewtonsoftJson());
     }
 
     protected Task<TResponseData> SendRequest<TResponseData>(string path, Method httpMethod,
