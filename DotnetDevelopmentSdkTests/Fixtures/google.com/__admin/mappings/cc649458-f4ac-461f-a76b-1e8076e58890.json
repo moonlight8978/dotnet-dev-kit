@@ -1,0 +1,92 @@
+{
+  "Guid": "cc649458-f4ac-461f-a76b-1e8076e58890",
+  "Title": "",
+  "Description": "",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/v2/mechas/1",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Headers": [
+      {
+        "Name": "Accept",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "application/json, text/json, text/x-json, text/javascript, application/xml, text/xml",
+            "IgnoreCase": true
+          }
+        ]
+      },
+      {
+        "Name": "Host",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "localhost:9095",
+            "IgnoreCase": true
+          }
+        ]
+      },
+      {
+        "Name": "User-Agent",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "RestSharp/108.0.1.0",
+            "IgnoreCase": true
+          }
+        ]
+      },
+      {
+        "Name": "Accept-Encoding",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "gzip, deflate, br",
+            "IgnoreCase": true
+          }
+        ]
+      },
+      {
+        "Name": "traceparent",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "00-91cfda0519c6eb468264be779ec00919-293f08ba461665cb-00",
+            "IgnoreCase": true
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsBytes": "MZwSACBWK7XXV9XvUWSd+PlCyiOYW1FHkGfZsykVf38qYVxC9hdQEtsYXfNdQIK77Xm3wJwUrkGpoCWrqd1EIrLA57TX08l+wgonjEz+DbAnBA+7JdR2lA/lXvHtDWuFPeFD0alY9d9dDcOOkDkJLN5z9lMtWRZvxM0xsC48VhP2xbcP7SiwgF9W1lAbLD5mV1IqGZ3wQkYFY5vdxeaKv+aFjAsG2Xbu4TE4dML7o7jAsfA3g9kuU24X94pvAShTNsj5FzJK9qwNnfBE2MvnvTHmHDnAEARlx7p3rIJOuNbE3H53vhFfc62pYpBVmpSR+0Vl5c62Zs7LVg/BpRlZQ1qCMq3YK4TeCcousDMGySC8fWLC4lHY902V64fyKGSOnzjOMsoPZv2P1r2wZ2eEh1l0bLDGtF0f8bBmS7iuld0/2OGK8ED+Sp7ETnpZGO4zhPsaanAcH3DiUd6IOhGj282GorFrotmwQxjrgJYkLvRGEiFKBeUxWt4fgkTv/IknwrEe3pSQK+zFZoZn7Nq5Wdm126h9yXdTqBMSh/w+vf+X2R/qhJB4lI8aYXGo9TjZ9dpvZ3dz8z/c7S/EbVcultmPQ8NcZanrnqS43o4uUiDI+cpTP8F+x37W/NuX24yfhO5LhsWnIw0Q0pMYesNap/tlbsUdhFS8xKcedujdAAM=",
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Encoding": "br",
+      "Date": "Fri, 12 Aug 2022 13:12:59 GMT",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "CF-Cache-Status": "DYNAMIC",
+      "Expect-CT": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "Report-To": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=TbmypVyLSTNPZqR2hTNbXLChwgjbe6od9tvlhWrk3zh9WsAruRcfv2l1vPn3K4qstqSX5IzY2x6ZlVsOVRWz%2BkyuciAem97%2BrzyCAbBi3HPMi86CFzlDFhHAn%2FD2sj0Y0pdXeLHHjc8k\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+      "NEL": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+      "Server": "cloudflare",
+      "CF-RAY": "7399773a3898460d-SIN",
+      "Alt-Svc": [
+        "h3=\":443\"",
+        "h3-29=\":443\""
+      ]
+    }
+  }
+}

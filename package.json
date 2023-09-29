@@ -1,0 +1,14 @@
+{
+  "name": "dotnet-sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com:b4360/dotnet-development-sdk-lib.git",
+  "author": "BichLS <bich@bravemobiles.com>",
+  "license": "MIT",
+  "dependencies": {
+    "gh-pages": "^4.0.0"
+  },
+  "scripts": {
+    "lint": "dotnet format --no-restore --verbosity=diagnostic"
+  }
+}
