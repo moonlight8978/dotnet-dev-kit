@@ -5,6 +5,7 @@ using System.Reflection;
 using DotnetDevelopmentSdk.Lib.Services;
 using DotnetDevelopmentSdk.Lib.Utils;
 using DotnetDevelopmentSdk.Lib.Validators;
+using DotnetDevelopmentSdk.Lib.Workflow;
 using Serilog;
 
 namespace DotnetDevelopmentSdk.Lib.Api;
@@ -30,18 +31,6 @@ public static class CommonApiCode
 
             fieldInfo.SetValue(null, codeValue);
         }
-    }
-}
-
-public class ApiActionServiceResult
-{
-    public int Code { get; set; }
-    public HttpResponseData? ResponseData { get; set; }
-    public HttpErrorResponseData? ErrorData { get; set; }
-
-    public bool IsSuccess()
-    {
-        return Code == CommonApiCode.Success;
     }
 }
 
@@ -111,7 +100,7 @@ public abstract class
 
     protected BaseApiActionServiceV2(IValidatorV2<TApiRequestData> requestValidator)
     {
-        _requestValidator = requestValidator;
+        _requestValidator = requestValidator;               
         Logger = Log.ForContext(GetType());
     }
 
@@ -182,52 +171,5 @@ public abstract class
     protected virtual async Task<ValidationResult> OnValidateRequestDataAsync()
     {
         return await _requestValidator.ValidateV2Async(ValidatorDataProvider);
-    }
-}
-
-public abstract class
-    BasePaginationApiActionService<TApiRequestData, TApiResponseData, TApiErrorCode> : BaseApiActionServiceV2<
-        TApiRequestData, TApiResponseData, TApiErrorCode>
-    where TApiRequestData : class, IPaginationRequestData, new()
-    where TApiResponseData : class, IPaginationResponseData, new()
-    where TApiErrorCode : Enum
-{
-    protected readonly PaginationService PaginationService;
-
-    protected BasePaginationApiActionService(IValidatorV2<TApiRequestData> requestValidator,
-        PaginationService paginationService) : base(requestValidator)
-    {
-        PaginationService = paginationService;
-    }
-
-    protected override async Task<ApiActionServiceResult> OnValidateRequestAndProcessAsync(
-        TApiRequestData apiRequestData)
-    {
-        var paginationRequestData = (IPaginationRequestData)apiRequestData;
-
-        IValidatorV2<PaginationRequestData> paginationRequestDataValidator = new PaginationRequestDataValidator();
-        var validationResult = await paginationRequestDataValidator.ValidateV2Async(new PaginationRequestData()
-        {
-            Page = paginationRequestData.Page,
-            PerPage = paginationRequestData.PerPage
-        });
-
-        if (validationResult.IsInvalid)
-        {
-            return ResultFactory.Error(CommonApiCode.InvalidRequestData, validationResult.FailureReasons);
-        }
-
-        PaginationService.SetPaginationInfoFromRequest(paginationRequestData);
-
-        return await base.OnValidateRequestAndProcessAsync(apiRequestData);
-    }
-
-    protected override async Task OnSuccessAsync(TApiRequestData apiRequestData,
-        HttpResponseData<TApiResponseData> httpResponseData)
-    {
-        await base.OnSuccessAsync(apiRequestData, httpResponseData);
-
-        var paginationResponseData = (IPaginationResponseData)httpResponseData.Data;
-        PaginationService.SetPaginationInfoToResponse(paginationResponseData);
     }
 }
