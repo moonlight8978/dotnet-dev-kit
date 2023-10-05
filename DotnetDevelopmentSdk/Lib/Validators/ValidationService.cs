@@ -5,12 +5,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotnetDevelopmentSdk.Lib.Validators;
 
-public class Validator<TData, TErrorCode> : AbstractValidator<TData> where TErrorCode : Enum 
+public class Validator<TData> : AbstractValidator<TData>
 {
-    public bool ContainsIn(ValidationResult validationResult, out TErrorCode? errorCode)
-    {
-        return validationResult.Contains(out errorCode);
-    }
+}
+
+public interface IEnumErrorCodeValidator<TErrorCode> where TErrorCode : Enum
+{
+}
+
+public class Validator<TData, TErrorCode> : Validator<TData>, IEnumErrorCodeValidator<TErrorCode>
+    where TErrorCode : Enum
+{
+    
 }
 
 public class ValidationService

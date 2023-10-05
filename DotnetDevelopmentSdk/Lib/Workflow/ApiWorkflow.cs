@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 using DotnetDevelopmentSdk.Lib.Api;
+using DotnetDevelopmentSdk.Lib.Utils;
 using DotnetDevelopmentSdk.Lib.Workflow.Middlewares;
 using Serilog;
 using IPaginationRequestData = DotnetDevelopmentSdk.Lib.Pagination.IPaginationRequestData;
@@ -36,14 +37,13 @@ public interface IPaginationWorkflowContext : IWorkflowContext
     public IPaginationResponseData PaginationResponseData { get; set; }
 }
 
-public abstract class ApiWorkflow<TRequestData, TResponseData, TErrorCode, TWorkflowContext>
+public abstract class
+    ApiWorkflow<TRequestData, TResponseData, TErrorCode, TWorkflowContext> : ITypeDirectedScopeBindedService
     where TErrorCode : Enum
     where TResponseData : class, new()
     where TRequestData : class, new()
     where TWorkflowContext : class, IApiWorkflowContext<TRequestData, TResponseData>, new()
 {
-    
-    
     protected readonly ILogger Logger;
     protected readonly TWorkflowContext WorkflowContext = new();
     private readonly WorkflowMiddlewareManager _workflowMiddlewareManager;

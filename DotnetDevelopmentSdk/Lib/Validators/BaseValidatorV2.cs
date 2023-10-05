@@ -12,26 +12,42 @@ public class ValidationResult
     public List<string> FailureReasons { get; set; } = new();
     public List<string> ErrorCodes { get; set; } = new();
 
-    public bool Contains<TErrorCode>(out TErrorCode? errorCode) where TErrorCode : Enum
+    public bool Contains(Type errorCodeType, out int? errorCode)
     {
         var errorCodeInNumbers = ErrorCodes.Select(errorCode =>
         {
-            if (!Enum.TryParse(typeof(TErrorCode), errorCode, true, out var result))
+            if (!Enum.TryParse(errorCodeType, errorCode, true, out var result))
             {
                 return -999;
             }
 
-            return result == null ? -999 : (int)result;
+            return (int)result;
         }).Where(code => code != -999).ToList();
-
+        
         if (errorCodeInNumbers.Count == 0)
         {
-            errorCode = default;
+            errorCode = -1;
             return false;
         }
-
-        errorCode = (TErrorCode)(object)errorCodeInNumbers.First();
+        
+        errorCode = errorCodeInNumbers.First();
         return true;
+    }
+    
+    public bool Contains<TErrorCode>(out TErrorCode? errorCode) where TErrorCode : Enum
+    {
+        var isContained = Contains(typeof(TErrorCode), out var errorCodeInt);
+
+        if (isContained)
+        {
+            errorCode = (TErrorCode)Enum.ToObject(typeof(TErrorCode), errorCodeInt!.Value);
+        }
+        else
+        {
+            errorCode = default;
+        }
+
+        return isContained;
     }
 }
 

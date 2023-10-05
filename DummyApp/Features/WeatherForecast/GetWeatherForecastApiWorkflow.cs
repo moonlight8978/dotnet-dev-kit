@@ -16,8 +16,8 @@ public class GetWeatherForecastApiWorkflow : ApiWorkflow<GetWeatherForecastHttpR
         workflowMiddlewareManager)
     {
         workflowMiddlewareManager
-            .Use<RequestValidationWorkflowMiddleware<GetWeatherForecastValidator,
-                GetWeatherForecastApiWorkflowContext>>();
+            .Use<RequestValidationWorkflowMiddleware<GetWeatherForecastValidator, GetWeatherForecastApiWorkflowContext,
+                GetWeatherForecastErrorCode>>();
     }
 
     protected override Task<ApiActionServiceResult> OnProcessAsync(GetWeatherForecastHttpRequestData requestData)

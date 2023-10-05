@@ -5,8 +5,10 @@ using FluentValidation;
 
 namespace DotnetDevelopmentSdk.Lib.Workflow.Middlewares;
 
-public class RequestValidationWorkflowMiddleware<TValidator, TWorkflowContext> : WorkflowMiddleware
-    where TWorkflowContext : class, IWorkflowContext where TValidator : Validator<TWorkflowContext>
+public class RequestValidationWorkflowMiddleware<TValidator, TWorkflowContext, TErrorCode> : WorkflowMiddleware
+    where TWorkflowContext : class, IWorkflowContext
+    where TValidator : Validator<TWorkflowContext>, IEnumErrorCodeValidator<TErrorCode>
+    where TErrorCode : Enum
 {
     private readonly ValidationService _validationService;
 
@@ -23,7 +25,7 @@ public class RequestValidationWorkflowMiddleware<TValidator, TWorkflowContext> :
 
         var result = await _validationService.PerformAsync<TValidator, TWorkflowContext>(context);
 
-        if (result.Contains<TApiErrorCode>(out var errorCode))
+        if (result.Contains<TErrorCode>(out var errorCode))
         {
             context.ResultCode = (int)(object)errorCode!;
             return;

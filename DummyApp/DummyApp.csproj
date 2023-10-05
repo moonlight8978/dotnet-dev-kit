@@ -4,10 +4,13 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DotnetDevelopmentSdk\DotnetDevelopmentSdk.csproj" />
   </ItemGroup>
+
+
 
 </Project>

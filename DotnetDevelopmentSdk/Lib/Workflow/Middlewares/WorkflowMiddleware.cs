@@ -35,15 +35,15 @@ public class WorkflowMiddlewareManager : IWorkflowMiddleware, ITypeDirectedScope
         _serviceProvider = serviceProvider;
     }
 
-    public void Use<T>() where T : IWorkflowMiddleware
+    public WorkflowMiddlewareManager Use<T>() where T : IWorkflowMiddleware
     {
-        if (_typeToMiddleware.ContainsKey(typeof(T)))
+        if (!_typeToMiddleware.ContainsKey(typeof(T)))
         {
-            return;
+            _typeToMiddleware[typeof(T)] = ActivatorUtilities.CreateInstance<T>(_serviceProvider);
+            _middlewareTypes.Add(typeof(T));
         }
-
-        _typeToMiddleware[typeof(T)] = ActivatorUtilities.CreateInstance<T>(_serviceProvider);
-        _middlewareTypes.Add(typeof(T));
+        
+        return this;
     }
 
     public T Get<T>() where T : IWorkflowMiddleware

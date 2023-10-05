@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 using DotnetDevelopmentSdk.Lib.Configurations;
+using DotnetDevelopmentSdk.Lib.Database;
 using DotnetDevelopmentSdk.Lib.Logging;
 using DotnetDevelopmentSdk.Lib.Utils;
 using DummyApp.Features.WeatherForecast;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddConfiguration<AccuWeatherConfiguration>();
+builder.AddConfiguration<AccuWeatherConfiguration>().AddConfiguration<DatabaseConfiguration>();
 builder.AddSerilog();
 
 // Add services to the container.
