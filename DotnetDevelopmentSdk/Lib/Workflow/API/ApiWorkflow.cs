@@ -1,28 +1,47 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
-using DotnetDevelopmentSdk.Lib.Api;
 using DotnetDevelopmentSdk.Lib.Utils;
 using DotnetDevelopmentSdk.Lib.Workflow.Middlewares;
 using Serilog;
 using IPaginationRequestData = DotnetDevelopmentSdk.Lib.Pagination.IPaginationRequestData;
 using IPaginationResponseData = DotnetDevelopmentSdk.Lib.Pagination.IPaginationResponseData;
 
-namespace DotnetDevelopmentSdk.Lib.Workflow;
+namespace DotnetDevelopmentSdk.Lib.Workflow.API;
 
 public interface IWorkflowContext
 {
     public int ResultCode { get; set; }
+    public List<string> ResultMessages { get; set; }
     public bool IsSuccess();
     public bool IsFailure();
+    public void Failure(int errorCode, string errorMessage);
+    public void Success(string message);
 }
 
 public class WorkflowContext : IWorkflowContext
 {
     public int ResultCode { get; set; }
 
+    public List<string> ResultMessages { get; set; } = new();
+
     public bool IsSuccess() => ResultCode == 0;
 
     public bool IsFailure() => !IsSuccess();
+
+    public void Failure(int errorCode, string errorMessage)
+    {
+        ResultCode = errorCode;
+        if (!string.IsNullOrEmpty(errorMessage))
+        {
+            ResultMessages.Add(errorMessage);
+        }
+    }
+
+    public void Success(string message)
+    {
+        ResultCode = 0;
+        ResultMessages = new List<string> { message };
+    }
 }
 
 public interface IApiWorkflowContext<TRequestData, TResponseData> : IWorkflowContext
@@ -31,10 +50,13 @@ public interface IApiWorkflowContext<TRequestData, TResponseData> : IWorkflowCon
     public TResponseData? ResponseData { get; set; }
 }
 
-public interface IPaginationWorkflowContext : IWorkflowContext
+public interface IPaginationWorkflowContext<TItem> : IWorkflowContext
 {
     public IPaginationRequestData PaginationRequestData { get; set; }
     public IPaginationResponseData PaginationResponseData { get; set; }
+    public IQueryable<TItem>? Query { get; set; }
+    public IEnumerable<TItem>? List { get; set; }
+    public List<TItem> Result { get; set; }
 }
 
 public abstract class
@@ -47,7 +69,6 @@ public abstract class
     protected readonly ILogger Logger;
     protected readonly TWorkflowContext WorkflowContext = new();
     private readonly WorkflowMiddlewareManager _workflowMiddlewareManager;
-    protected readonly ApiActionServiceResultFactory<TResponseData, TErrorCode> ResultFactory = new();
 
     protected ApiWorkflow(WorkflowMiddlewareManager workflowMiddlewareManager)
     {
@@ -55,17 +76,17 @@ public abstract class
         Logger = Log.ForContext(GetType());
     }
 
-    public async Task<ApiActionServiceResult> PerformAsync(TRequestData requestData)
+    public async Task<IApiWorkflowContext<TRequestData, TResponseData>> PerformAsync(TRequestData requestData)
     {
         try
         {
             WorkflowContext.RequestData = requestData;
-            await OnPrepareAsync(requestData);
+            await OnPrepareAsync();
             await _workflowMiddlewareManager.InitializeAsync(WorkflowContext);
-            var result = await OnProcessAsync(requestData);
-            WorkflowContext.ResultCode = result.Code;
-            WorkflowContext.ResponseData = result.ResponseData as TResponseData;
-            return result;
+            if (!WorkflowContext.IsFailure())
+            {
+                await OnProcessAsync();
+            }
         }
         catch (Exception)
         {
@@ -76,12 +97,25 @@ public abstract class
         {
             await _workflowMiddlewareManager.FinalizeAsync(WorkflowContext);
         }
+
+        OnSuccess();
+        
+        return WorkflowContext;
     }
 
-    protected virtual Task OnPrepareAsync(TRequestData requestData)
+    protected virtual void OnSuccess()
+    {
+    }
+
+    protected virtual Task OnPrepareAsync()
     {
         return Task.CompletedTask;
     }
 
-    protected abstract Task<ApiActionServiceResult> OnProcessAsync(TRequestData requestData);
+    protected abstract Task OnProcessAsync();
+
+    protected void Failure(TErrorCode errorCode, string? message = null)
+    {
+        WorkflowContext.Failure(Convert.ToInt32(errorCode), message ?? errorCode.ToString());
+    }
 }

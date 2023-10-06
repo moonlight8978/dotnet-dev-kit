@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 using DotnetDevelopmentSdk.Lib.Validators;
+using DotnetDevelopmentSdk.Lib.Workflow.API;
 using FluentValidation;
 
 namespace DotnetDevelopmentSdk.Lib.Workflow.Middlewares;
 
 public class RequestValidationWorkflowMiddleware<TValidator, TWorkflowContext, TErrorCode> : WorkflowMiddleware
     where TWorkflowContext : class, IWorkflowContext
-    where TValidator : Validator<TWorkflowContext>, IEnumErrorCodeValidator<TErrorCode>
+    where TValidator : Validator<TWorkflowContext>
     where TErrorCode : Enum
 {
     private readonly ValidationService _validationService;

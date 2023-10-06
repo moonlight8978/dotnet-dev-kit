@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
+using DotnetDevelopmentSdk.Lib.Utils;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,21 +10,17 @@ public class Validator<TData> : AbstractValidator<TData>
 {
 }
 
-public interface IEnumErrorCodeValidator<TErrorCode> where TErrorCode : Enum
-{
-}
-
-public class Validator<TData, TErrorCode> : Validator<TData>, IEnumErrorCodeValidator<TErrorCode>
+public class Validator<TData, TErrorCode> : Validator<TData>
     where TErrorCode : Enum
 {
     
 }
 
-public class ValidationService
+public class ValidationService : ITypeDirectedScopeBindedService
 {
-    private readonly ServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
 
-    public ValidationService(ServiceProvider serviceProvider)
+    public ValidationService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }

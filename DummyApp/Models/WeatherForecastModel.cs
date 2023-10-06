@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace DummyApp.Models;
 
 [Table("weather_forecasts")]
-[Index(nameof(Date), IsUnique = true)]
+[Index(nameof(Date))]
 public class WeatherForecastModel
 {
     [Key]
     [Column("id")]
     public int Id { get; set; }
     
-    [Column("date")]
+    [Column("date", TypeName = "date")]
     public DateTime Date { get; set; }
 
     [Column("temperature_c")]

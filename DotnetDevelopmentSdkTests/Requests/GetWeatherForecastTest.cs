@@ -9,6 +9,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Encoding = System.Text.Encoding;
+using PaginationRequestData = DummyApp.Features.Pagination.PaginationRequestData;
 
 namespace DotnetDevelopmentSdkTests.Requests;
 
@@ -27,10 +28,18 @@ public class GetWeatherForecastTest : SdkIntegrationTestSuit
     public async Task GetSuccessfullyWithMockData()
     {
         var response = await _client.PostAsync("api/weathers/get",
-            new StringContent(JsonConvert.SerializeObject(new HttpRequestData<GetWeatherForecastHttpRequestData>()
-            {
-                Data = new GetWeatherForecastHttpRequestData() { Offset = 2 }
-            }), Encoding.UTF8, "application/json"));
+            new StringContent(
+                JsonConvert.SerializeObject(new HttpRequestData<GetWeatherForecastHttpRequestData>()
+                {
+                    Data = new GetWeatherForecastHttpRequestData()
+                    {
+                        Pagination = new PaginationRequestData()
+                        {
+                            From = 0,
+                            To = 10
+                        }, CreateNewRecord = true
+                    }
+                }), Encoding.UTF8, "application/json"));
         response.Should().HaveStatusCode(HttpStatusCode.OK);
         var responseData =
             await response.Content.ReadFromJsonAsync<HttpResponseData<GetWeatherForecastHttpResponseData>>();

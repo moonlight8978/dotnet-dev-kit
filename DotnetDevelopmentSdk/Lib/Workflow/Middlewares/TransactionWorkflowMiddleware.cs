@@ -2,6 +2,7 @@
 
 using System.Data;
 using System.Data.Common;
+using DotnetDevelopmentSdk.Lib.Workflow.API;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotnetDevelopmentSdk.Lib.Workflow.Middlewares;

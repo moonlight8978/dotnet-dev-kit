@@ -4,6 +4,7 @@ using DotnetDevelopmentSdk.Lib.Configurations;
 using DotnetDevelopmentSdk.Lib.Database;
 using DotnetDevelopmentSdk.Lib.Logging;
 using DotnetDevelopmentSdk.Lib.Utils;
+using DummyApp.Database;
 using DummyApp.Features.WeatherForecast;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,8 @@ builder.Services.BindTypeDirectedScopedServices();
 builder.Services.BindTypeDirectedSingletonServices();
 builder.Services.BindTypeDirectedTransientServices();
 
+builder.Services.AddDatabase<AppDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +32,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MigrateDatabase<AppDbContext>();
 
 app.UseHttpsRedirection();
 

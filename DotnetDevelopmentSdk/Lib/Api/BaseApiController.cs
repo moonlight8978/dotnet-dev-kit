@@ -1,8 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
-using DotnetDevelopmentSdk.Lib.Controllers;
-using DotnetDevelopmentSdk.Lib.Workflow;
-using HybridModelBinding;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetDevelopmentSdk.Lib.Api;
@@ -32,12 +29,6 @@ public abstract class BaseApiController : ControllerBase
 
         return BadRequest(apiActionServiceResult.ErrorData);
     }
-}
-
-public interface IControllerActionHandler<TRequest, TResponse>
-    where TRequest : class, new() where TResponse : class, new()
-{
-    Task<ActionResult<HttpResponseData<TResponse>>> Perform([FromHybrid] HttpRequestData<TRequest> requestData);
 }
 
 public class HttpResponseData

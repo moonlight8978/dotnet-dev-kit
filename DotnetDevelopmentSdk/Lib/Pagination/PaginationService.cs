@@ -57,8 +57,8 @@ public class PaginationService : ITypeDirectedTransientBindedService
     {
         _page = Math.Max(paginationRequestData.Page, 1);
         _perPage = Math.Min(paginationRequestData.PerPage, 1000);
-        _from = _page * _perPage + 1;
-        _to = _page * _perPage;
+        _from = (_page - 1) * _perPage;
+        _to = _page * _perPage - 1;
 
         if (paginationRequestData.From.HasValue && paginationRequestData.To.HasValue)
         {
