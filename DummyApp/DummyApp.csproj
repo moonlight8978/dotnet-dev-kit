@@ -8,9 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotnetDevelopmentSdk\DotnetDevelopmentSdk.csproj" />
+    <ProjectReference Include="..\DotnetDevelopmentSdk\DotnetDevelopmentSdk.csproj"/>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
   </ItemGroup>
-
-
-
 </Project>
