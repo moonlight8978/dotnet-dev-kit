@@ -48,7 +48,7 @@ public class HttpRequestData
 
 public class HttpRequestData<T> : HttpRequestData where T : class, new()
 {
-    public new T? Data { get; set; } = new();
+    public new T Data { get; set; } = new();
 }
 
 public class HttpErrorResponseData

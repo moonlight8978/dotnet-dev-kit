@@ -2,7 +2,6 @@
 
 using System.Data;
 using System.Data.Common;
-using DotnetDevelopmentSdk.Lib.Workflow.API;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotnetDevelopmentSdk.Lib.Workflow.Middlewares;
@@ -20,7 +19,7 @@ public class TransactionWorkflowMiddleware<T> : WorkflowMiddleware where T : DbC
     public override async Task InitializeAsync(IWorkflowContext workflowContext)
     {
         await base.InitializeAsync(workflowContext);
-        
+
         var dbConnection = _dbContext.Database.GetDbConnection();
 
         if (dbConnection.State != ConnectionState.Open)
@@ -35,7 +34,7 @@ public class TransactionWorkflowMiddleware<T> : WorkflowMiddleware where T : DbC
     public override async Task FinalizeAsync(IWorkflowContext workflowContext)
     {
         await base.FinalizeAsync(workflowContext);
-        
+
         if (_transaction == null)
         {
             return;

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 using DotnetDevelopmentSdk.Lib.Pagination;
 using DotnetDevelopmentSdk.Lib.Workflow.API;
@@ -25,7 +25,7 @@ public class PaginationWorkflowMiddleware<TItem> : WorkflowMiddleware
     public override async Task FinalizeAsync(IWorkflowContext workflowContext)
     {
         await base.FinalizeAsync(workflowContext);
-        
+
         var context = (workflowContext as IPaginationWorkflowContext<TItem>)!;
 
         if (workflowContext.IsFailure())
@@ -42,7 +42,7 @@ public class PaginationWorkflowMiddleware<TItem> : WorkflowMiddleware
         {
             context.Result = (await _paginationService.PerformAsync(context.Query)).ToList();
         }
-        
+
         _paginationService.SetResponseData(context.PaginationResponseData);
     }
 }

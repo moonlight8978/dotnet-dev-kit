@@ -3,7 +3,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 namespace DotnetDevelopmentSdk.Lib.Api;
-                                    
+
 public class ServiceReturnValue : IServiceReturnValue<object>
 {
     public const int Success = 0;

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 using System.Net;
 using DotnetDevelopmentSdk.Lib.Api;
@@ -35,7 +35,8 @@ public class APIController : ControllerBase
         {
             return BadRequest(new ErrorResponse()
             {
-                Code = workflowContext.ResultCode, Message = string.Join("\n", workflowContext.ResultMessages)
+                Code = workflowContext.ResultCode,
+                Message = string.Join("\n", workflowContext.ResultMessages)
             });
         }
 

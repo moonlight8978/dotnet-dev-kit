@@ -23,17 +23,17 @@ public class ValidationResult
 
             return (int)result;
         }).Where(code => code != -999).ToList();
-        
+
         if (errorCodeInNumbers.Count == 0)
         {
             errorCode = -1;
             return false;
         }
-        
+
         errorCode = errorCodeInNumbers.First();
         return true;
     }
-    
+
     public bool Contains<TErrorCode>(out TErrorCode? errorCode) where TErrorCode : Enum
     {
         var isContained = Contains(typeof(TErrorCode), out var errorCodeInt);

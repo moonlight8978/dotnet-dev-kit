@@ -1,8 +1,7 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 using DotnetDevelopmentSdk.Lib.Validators;
 using DotnetDevelopmentSdk.Lib.Workflow.API;
-using FluentValidation;
 
 namespace DotnetDevelopmentSdk.Lib.Workflow.Middlewares;
 

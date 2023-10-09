@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 using DotnetDevelopmentSdk.Lib.Utils;
-using DotnetDevelopmentSdk.Lib.Workflow.API;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotnetDevelopmentSdk.Lib.Workflow.Middlewares;
@@ -43,7 +42,7 @@ public class WorkflowMiddlewareManager : IWorkflowMiddleware, ITypeDirectedScope
             _typeToMiddleware[typeof(T)] = ActivatorUtilities.CreateInstance<T>(_serviceProvider);
             _middlewareTypes.Add(typeof(T));
         }
-        
+
         return this;
     }
 

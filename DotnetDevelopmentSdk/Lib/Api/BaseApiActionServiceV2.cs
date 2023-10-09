@@ -5,7 +5,6 @@ using System.Reflection;
 using DotnetDevelopmentSdk.Lib.Services;
 using DotnetDevelopmentSdk.Lib.Utils;
 using DotnetDevelopmentSdk.Lib.Validators;
-using DotnetDevelopmentSdk.Lib.Workflow;
 using Serilog;
 
 namespace DotnetDevelopmentSdk.Lib.Api;
@@ -100,7 +99,7 @@ public abstract class
 
     protected BaseApiActionServiceV2(IValidatorV2<TApiRequestData> requestValidator)
     {
-        _requestValidator = requestValidator;               
+        _requestValidator = requestValidator;
         Logger = Log.ForContext(GetType());
     }
 
