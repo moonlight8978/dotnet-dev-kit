@@ -32,11 +32,11 @@ public abstract class
 {
     protected readonly ILogger Logger;
     protected readonly TWorkflowContext WorkflowContext = new();
-    private readonly WorkflowMiddlewareManager _workflowMiddlewareManager;
+    protected readonly WorkflowMiddlewareManager WorkflowMiddlewareManager;
 
     protected ApiWorkflow(WorkflowMiddlewareManager workflowMiddlewareManager)
     {
-        _workflowMiddlewareManager = workflowMiddlewareManager;
+        WorkflowMiddlewareManager = workflowMiddlewareManager;
         Logger = Log.ForContext(GetType());
     }
 
@@ -46,7 +46,7 @@ public abstract class
         {
             WorkflowContext.RequestData = requestData;
             await OnPrepareAsync();
-            await _workflowMiddlewareManager.InitializeAsync(WorkflowContext);
+            await WorkflowMiddlewareManager.InitializeAsync(WorkflowContext);
             if (!WorkflowContext.IsFailure())
             {
                 await OnProcessAsync();
@@ -59,7 +59,7 @@ public abstract class
         }
         finally
         {
-            await _workflowMiddlewareManager.FinalizeAsync(WorkflowContext);
+            await WorkflowMiddlewareManager.FinalizeAsync(WorkflowContext);
         }
 
         OnSuccess();
@@ -81,5 +81,11 @@ public abstract class
     protected void Failure(TErrorCode errorCode, string? message = null)
     {
         WorkflowContext.Failure(Convert.ToInt32(errorCode), message ?? errorCode.ToString());
+    }
+
+    protected void Success(TResponseData responseData, string message = "Success")
+    {
+        WorkflowContext.ResponseData = responseData;
+        WorkflowContext.Success(message);
     }
 }
