@@ -12,10 +12,13 @@ public class RequestValidationWorkflowMiddleware<TValidator, TWorkflowContext, T
     where TErrorCode : Enum
 {
     private readonly ValidationService _validationService;
+    private readonly IErrorCodeProvider _errorCodeProvider;
 
-    public RequestValidationWorkflowMiddleware(ValidationService validationService)
+    public RequestValidationWorkflowMiddleware(ValidationService validationService,
+        IErrorCodeProvider errorCodeProvider)
     {
         _validationService = validationService;
+        _errorCodeProvider = errorCodeProvider;
     }
 
     public override async Task InitializeAsync(IWorkflowContext workflowContext)
@@ -29,12 +32,14 @@ public class RequestValidationWorkflowMiddleware<TValidator, TWorkflowContext, T
         if (result.Contains<TErrorCode>(out var errorCode))
         {
             context.ResultCode = (int)(object)errorCode!;
+            context.ResultMessages = result.FailureReasons;
             return;
         }
 
         if (result.IsInvalid)
         {
-            context.ResultCode = -1;
+            context.ResultCode = _errorCodeProvider.ValidationError;
+            context.ResultMessages = new List<string> { "Request data is invalid" };
         }
     }
 }

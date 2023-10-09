@@ -13,7 +13,6 @@ public class Validator<TData> : AbstractValidator<TData>
 public class Validator<TData, TErrorCode> : Validator<TData>
     where TErrorCode : Enum
 {
-    
 }
 
 public class ValidationService : ITypeDirectedScopeBindedService

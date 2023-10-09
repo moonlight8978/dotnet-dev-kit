@@ -46,7 +46,7 @@ public class WorkflowContext : IWorkflowContext
 
 public interface IApiWorkflowContext<TRequestData, TResponseData> : IWorkflowContext
 {
-    public TRequestData RequestData { get; set; }
+    public TRequestData? RequestData { get; set; }
     public TResponseData? ResponseData { get; set; }
 }
 
@@ -76,7 +76,7 @@ public abstract class
         Logger = Log.ForContext(GetType());
     }
 
-    public async Task<IApiWorkflowContext<TRequestData, TResponseData>> PerformAsync(TRequestData requestData)
+    public async Task<IApiWorkflowContext<TRequestData, TResponseData>> PerformAsync(TRequestData? requestData)
     {
         try
         {
