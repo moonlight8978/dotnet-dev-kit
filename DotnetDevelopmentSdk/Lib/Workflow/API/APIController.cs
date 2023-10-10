@@ -28,15 +28,17 @@ public class APIController : ControllerBase
     {
         if (workflowContext.IsSuccess())
         {
-            return new JsonResult(workflowContext.ResponseData) { StatusCode = (int)httpStatusCode };
+            return new JsonResult(new HttpResponseData<TResponseData> { Data = workflowContext.ResponseData! })
+            {
+                StatusCode = (int)httpStatusCode
+            };
         }
 
         if (_errorCodeProvider.IsClientError(workflowContext.ResultCode))
         {
             return BadRequest(new ErrorResponse()
             {
-                Code = workflowContext.ResultCode,
-                Message = string.Join("\n", workflowContext.ResultMessages)
+                Code = workflowContext.ResultCode, Message = string.Join("\n", workflowContext.ResultMessages)
             });
         }
 
