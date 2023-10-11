@@ -38,7 +38,8 @@ public class APIController : ControllerBase
         {
             return BadRequest(new ErrorResponse()
             {
-                Code = workflowContext.ResultCode, Message = string.Join("\n", workflowContext.ResultMessages)
+                Code = workflowContext.ResultCode,
+                Message = string.Join("\n", workflowContext.ResultMessages)
             });
         }
 
