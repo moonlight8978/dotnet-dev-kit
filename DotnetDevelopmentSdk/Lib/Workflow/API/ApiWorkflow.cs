@@ -80,7 +80,12 @@ public abstract class
 
     protected void Failure(TErrorCode errorCode, string? message = null)
     {
-        WorkflowContext.Failure(Convert.ToInt32(errorCode), message ?? errorCode.ToString());
+        Failure(Convert.ToInt32(errorCode), message);
+    }
+
+    protected void Failure(int errorCode, string? message = null)
+    {
+        WorkflowContext.Failure(errorCode, message ?? errorCode.ToString());
     }
 
     protected void Success(TResponseData responseData, string message = "Success")
