@@ -51,9 +51,10 @@ public class WorkflowMiddlewareManager : IWorkflowMiddleware, ITypeDirectedScope
         return (T)_typeToMiddleware[typeof(T)];
     }
 
-    public void Configure<T>(Action<T> configure) where T : IWorkflowMiddleware
+    public WorkflowMiddlewareManager Configure<T>(Action<T> configure) where T : IWorkflowMiddleware
     {
         configure(Get<T>());
+        return this;
     }
 
     public async Task InitializeAsync(IWorkflowContext workflowContext)
