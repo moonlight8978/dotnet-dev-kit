@@ -32,5 +32,5 @@ public class SimpleRedisKey : IRedisKey
         Key = key;
     }
 
-    public TimeSpan? Ttl => null;
+    public virtual TimeSpan? Ttl => null;
 }
