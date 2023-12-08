@@ -11,7 +11,8 @@ public static class PostgresqlInitializer
     {
         NpgsqlConnection.GlobalTypeMapper.UseJsonNet(settings: new JsonSerializerSettings
         {
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc
         });
     }
 }
