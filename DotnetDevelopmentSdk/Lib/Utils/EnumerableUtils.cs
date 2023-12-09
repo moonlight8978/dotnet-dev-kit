@@ -85,7 +85,6 @@ public static class EnumerableUtils
         return iEnumerable.Any() ? iEnumerable.Average(item => (float)evaluate(item)) : 0;
     }
 
-
     public static int SafeMin<T>(this IEnumerable<T> collection, Func<T, int> evaluate, int fallback = 0)
     {
         var iEnumerable = collection.ToList();
