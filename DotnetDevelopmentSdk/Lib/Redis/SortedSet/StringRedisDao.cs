@@ -36,7 +36,7 @@ public abstract class StringRedisDao<TKey, TData> : ITypeDirectedScopeBindedServ
     public async Task<Record> GetAsync(TKey key)
     {
         var result = await _database.StringGetAsync(key.Prepare());
-        if (result.HasValue)
+        if (!result.HasValue)
         {
             return new Record(key, default);
         }
