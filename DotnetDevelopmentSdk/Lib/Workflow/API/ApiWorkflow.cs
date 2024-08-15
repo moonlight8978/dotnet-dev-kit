@@ -42,9 +42,15 @@ public abstract class
 
     public async Task<IApiWorkflowContext<TRequestData, TResponseData>> PerformAsync(TRequestData requestData)
     {
+        WorkflowContext.RequestData = requestData;
+        
+        if (WorkflowContext.IsFailure())
+        {
+            return WorkflowContext;
+        }
+
         try
         {
-            WorkflowContext.RequestData = requestData;
             await OnPrepareAsync();
             await WorkflowMiddlewareManager.InitializeAsync(WorkflowContext);
             if (!WorkflowContext.IsFailure())
