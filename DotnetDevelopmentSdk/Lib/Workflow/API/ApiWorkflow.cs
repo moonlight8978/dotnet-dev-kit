@@ -43,7 +43,7 @@ public abstract class
     public async Task<IApiWorkflowContext<TRequestData, TResponseData>> PerformAsync(TRequestData requestData)
     {
         WorkflowContext.RequestData = requestData;
-        
+
         if (WorkflowContext.IsFailure())
         {
             return WorkflowContext;
@@ -58,7 +58,7 @@ public abstract class
                 await OnProcessAsync();
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
             WorkflowContext.ResultCode = -1;
             throw;
@@ -68,7 +68,10 @@ public abstract class
             await WorkflowMiddlewareManager.FinalizeAsync(WorkflowContext);
         }
 
-        OnSuccess();
+        if (WorkflowContext.IsSuccess())
+        {
+            OnSuccess();
+        }
 
         return WorkflowContext;
     }
